@@ -1,0 +1,9 @@
+Package: quick-vantage
+Version: 1.1-2
+Architecture: all
+Maintainer: SIDDHARTH <siddhubhai998@gmail.com>
+Installed-Size: 10
+Depends: bash, coreutils
+Section: utils
+Priority: optional
+Description: A simple utility to enable Lenovo Conservation Mode and Function Lock.

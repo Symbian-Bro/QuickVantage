@@ -1,0 +1,11 @@
+Source: quick-vantage
+Section: utils
+Priority: optional
+Maintainer: SIDDHARTH <siddhubhai998@gmail.com>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.0
+
+Package: quick-vantage
+Architecture: all
+Depends: bash, coreutils
+Description: A simple utility to enable Lenovo Conservation Mode and Function Lock.

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo "🔒 Requesting sudo privileges..."
+    exec sudo "$0" "$@"
+    exit 1
+fi
+
+# Function to enable Conservation Mode
+enable_conservation() {
+    echo 1 > /sys/bus/platf*/drivers/ideap*/VPC*/conser*
+    echo "✅ Conservation Mode has been enabled."
+}
+
+# Function to enable Function Lock
+enable_fn_lock() {
+    echo 1 > /sys/bus/platf*/drivers/ideap*/VPC*/fn*
+    echo "✅ Function Lock has been enabled."
+}
+
+# Display menu
+echo "QuickVantage - Lenovo Utility"
+echo "============================="
+echo "1) Enable Conservation Mode"
+echo "2) Enable Function Lock"
+echo "3) Enable Both"
+echo "4) Exit"
+echo "============================="
+
+# Read user input
+read -p "Choose an option (1-4): " choice
+
+# Process choice
+case $choice in
+    1)
+        enable_conservation
+        ;;
+    2)
+        enable_fn_lock
+        ;;
+    3)
+        enable_conservation
+        enable_fn_lock
+        ;;
+    4)
+        echo "Exiting..."
+        exit 0
+        ;;
+    *)
+        echo "❌ Invalid option. Exiting."
+        exit 1
+        ;;
+esac
