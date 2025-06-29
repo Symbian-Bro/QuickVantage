@@ -11,11 +11,19 @@ enable_conservation() {
     echo 1 > /sys/bus/platf*/drivers/ideap*/VPC*/conser*
     echo "✅ Conservation Mode has been enabled."
 }
+disable_conservation() {
+    echo 0 > /sys/bus/platf*/drivers/ideap*/VPC*/conser*
+    echo "❌ Conservation Mode has been disabled."
+}
 
 # Function Lock
 enable_fn_lock() {
     echo 1 > /sys/bus/platf*/drivers/ideap*/VPC*/fn*
     echo "✅ Function Lock has been enabled."
+}
+disable_fn_lock() {
+    echo 0 > /sys/bus/platf*/drivers/ideap*/VPC*/fn*
+    echo "❌ Function Lock has been disabled."
 }
 
 # To display the menu
