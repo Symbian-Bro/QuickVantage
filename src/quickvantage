@@ -27,12 +27,12 @@ disable_fn_lock() {
 }
 
 # To display the menu
-echo "QuickVantage - Lenovo Utility"
-echo "============================="
-echo "1) Enable Conservation Mode"
-echo "2) Enable Function Lock"
-echo "3) Enable Both"
-echo "============================="
+echo "          Quick-Vantage          "
+echo "|===============================|"
+echo "|  1) Enable Conservation Mode  |"
+echo "|  2) Enable Function Lock      |"
+echo "|  3) Enable Both               |"
+echo "|===============================|"
 
 read -p "Choose an option (1-3): " choice
 
