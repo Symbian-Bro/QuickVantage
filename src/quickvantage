@@ -32,9 +32,12 @@ echo "|===============================|"
 echo "|  1) Enable Conservation Mode  |"
 echo "|  2) Enable Function Lock      |"
 echo "|  3) Enable Both               |"
+echo "|  4) Disable Conservation Mode |"
+echo "|  5) Disable Function Lock     |"
+echo "|  6) Disable Both              |"
 echo "|===============================|"
 
-read -p "Choose an option (1-3): " choice
+read -p "Choose an option (1-6): " choice
 
 # Case for processing the user-input
 case $choice in
@@ -47,6 +50,16 @@ case $choice in
     3)
         enable_conservation
         enable_fn_lock
+        ;;
+    4)
+        disable_conservation
+        ;;
+    5)
+        disable_fn_lock
+        ;;
+    6)
+        disable_conservation
+        disable_fn_lock
         ;;
     *)
         echo "❌ Invalid option. Exiting."
