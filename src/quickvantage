@@ -38,18 +38,21 @@ toggle_fn_lock() {
 show_status() {
     cons=$(cat $CONSERVATION_PATH 2>/dev/null)
     fn=$(cat $FN_LOCK_PATH 2>/dev/null)
-    
-    echo "          Quick-Vantage          "
+    # p and q is computed earlier to lessen the clutter inside the menu
+    p=$( [ "$cons" -eq 1 ] && echo "✅ ON" || echo "❌ OFF" )
+    q=$( [ "$fn" -eq 1 ] && echo "✅ ON" || echo "❌ OFF" )
+    echo "._______________________________."
+    echo "|         Quick-Vantage         |"
     echo "|===============================|"
     echo "|  Current Status:              |"
-    echo "|  - Conservation Mode: $( [ "$cons" -eq 1 ] && echo "✅ ON" || echo "❌ OFF" )"
-    echo "|  - Function Lock:    $( [ "$fn" -eq 1 ] && echo "✅ ON" || echo "❌ OFF" )"
+    echo "|  - Conservation Mode: $p      |"
+    echo "|  - Function Lock:     $q      |"
     echo "|===============================|"
     echo "|  Options:                     |"
     echo "|  1) Toggle Conservation Mode  |"
     echo "|  2) Toggle Function Lock      |"
     echo "|  q) Quit                      |"
-    echo "|===============================|"
+    echo "|_______________________________|"
 }
 
 # Main script
