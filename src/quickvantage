@@ -6,63 +6,68 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-# Function to enable Conservation Mode (Used wildcards 'cuz the digits after VPC differ on different variants of the same model)
-enable_conservation() {
-    echo 1 > /sys/bus/platf*/drivers/ideap*/VPC*/conser*
-    echo "✅ Conservation Mode has been enabled."
-}
-disable_conservation() {
-    echo 0 > /sys/bus/platf*/drivers/ideap*/VPC*/conser*
-    echo "❌ Conservation Mode has been disabled."
-}
+# Path variables (add your custom variables here for better maintainability)
+CONSERVATION_PATH="/sys/bus/platf*/drivers/ideap*/VPC*/conser*"
+FN_LOCK_PATH="/sys/bus/platf*/drivers/ideap*/VPC*/fn*"
 
-# Function Lock
-enable_fn_lock() {
-    echo 1 > /sys/bus/platf*/drivers/ideap*/VPC*/fn*
-    echo "✅ Function Lock has been enabled."
-}
-disable_fn_lock() {
-    echo 0 > /sys/bus/platf*/drivers/ideap*/VPC*/fn*
-    echo "❌ Function Lock has been disabled."
+# Toggle Conservation Mode
+toggle_conservation() {
+    current=$(cat $CONSERVATION_PATH 2>/dev/null)
+    if [ "$current" -eq 1 ]; then
+        echo 0 > $CONSERVATION_PATH
+        echo "❌ Conservation Mode disabled"
+    else
+        echo 1 > $CONSERVATION_PATH
+        echo "✅ Conservation Mode enabled"
+    fi
 }
 
-# To display the menu
-echo "          Quick-Vantage          "
-echo "|===============================|"
-echo "|  1) Enable Conservation Mode  |"
-echo "|  2) Enable Function Lock      |"
-echo "|  3) Enable Both               |"
-echo "|  4) Disable Conservation Mode |"
-echo "|  5) Disable Function Lock     |"
-echo "|  6) Disable Both              |"
-echo "|===============================|"
+# Toggle Function Lock
+toggle_fn_lock() {
+    current=$(cat $FN_LOCK_PATH 2>/dev/null)
+    if [ "$current" -eq 1 ]; then
+        echo 0 > $FN_LOCK_PATH
+        echo "❌ Function Lock disabled"
+    else
+        echo 1 > $FN_LOCK_PATH
+        echo "✅ Function Lock enabled"
+    fi
+}
 
-read -p "Choose an option (1-6): " choice
+# Current status function
+show_status() {
+    cons=$(cat $CONSERVATION_PATH 2>/dev/null)
+    fn=$(cat $FN_LOCK_PATH 2>/dev/null)
+    
+    echo "          Quick-Vantage          "
+    echo "|===============================|"
+    echo "|  Current Status:              |"
+    echo "|  - Conservation Mode: $( [ "$cons" -eq 1 ] && echo "✅ ON" || echo "❌ OFF" )"
+    echo "|  - Function Lock:    $( [ "$fn" -eq 1 ] && echo "✅ ON" || echo "❌ OFF" )"
+    echo "|===============================|"
+    echo "|  Options:                     |"
+    echo "|  1) Toggle Conservation Mode  |"
+    echo "|  2) Toggle Function Lock      |"
+    echo "|  q) Quit                      |"
+    echo "|===============================|"
+}
 
-# Case for processing the user-input
-case $choice in
-    1)
-        enable_conservation
-        ;;
-    2)
-        enable_fn_lock
-        ;;
-    3)
-        enable_conservation
-        enable_fn_lock
-        ;;
-    4)
-        disable_conservation
-        ;;
-    5)
-        disable_fn_lock
-        ;;
-    6)
-        disable_conservation
-        disable_fn_lock
-        ;;
-    *)
-        echo "❌ Invalid option. Exiting."
-        exit 1
-        ;;
-esac
+# Main script
+while true; do
+    show_status
+    read -p "Choose an option (1-2, q): " choice
+    
+    case $choice in
+        1) toggle_conservation ;;
+        2) toggle_fn_lock ;;
+        q|Q) 
+            echo "Goodbye!"
+            exit 0
+            ;;
+        *) 
+            echo "Invalid option, please try again"
+            ;;
+    esac
+    
+    sleep 1  # Added delay so that the user can see the updates live
+done
