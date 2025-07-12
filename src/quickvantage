@@ -35,12 +35,33 @@ toggle_fn_lock() {
     fi
 }
 
+# Keyboard backlight
+kbd_backlight(){
+    current=$(cat $KBD_Backlight 2>/dev/null)
+    echo
+    echo "Current keyboard backlight level : [$current]"
+    echo "/-------------------------------\ "
+    echo "|  0) Off                       |"
+    echo "|  1) Medium                    |"
+    echo "|  2) High                      |"
+    echo "\-------------------------------/"
+    read -p "Enter new level (0-2): " level
+    # Brightness is limited to 3 by the manufacturer in the max_brightness file under the same directory
+    if [[ "$level" =~ ^[012]$ ]]; then
+        echo "$level" > $KBD_Backlight
+        echo "Keyboard backlight set to level $level"
+    else
+        echo "Invalid input! Please enter 0, 1, or 2."
+    fi
+}
+
 # Current status function
 show_status() {
     cons=$(cat $CONSERVATION_PATH 2>/dev/null)
     fn=$(cat $FN_LOCK_PATH 2>/dev/null)
     kbd=$(cat $KBD_Backlight 2>/dev/null)
     # p and q is computed earlier to lessen the clutter inside the menu
+    # Moved "|" a bit outward to account for the shrinking(Line 53) 
     p=$( [ "$cons" -eq 1 ] && echo "[ ON]" || echo "[OFF]" )
     q=$( [ "$fn" -eq 1 ] && echo "[ ON]" || echo "[OFF]" )
     echo "._______________________________."
@@ -54,6 +75,7 @@ show_status() {
     echo "|  Options:                     |"
     echo "|  1) Toggle Conservation Mode  |"
     echo "|  2) Toggle Function Lock      |"
+    echo "|  3) Set Keyboard Backlight    |"
     echo "|  q) Quit                      |"
     echo "|_______________________________|"
 }
@@ -62,11 +84,12 @@ show_status() {
 while true; do
     show_status
     echo
-    read -p "Choose an option (1-2, q): " choice
+    read -p "Choose an option (1-3, q): " choice
     
     case $choice in
         1) toggle_conservation ;;
         2) toggle_fn_lock ;;
+        3) kbd_backlight ;;
         q|Q) 
             echo "Goodbye!"
             exit 0
