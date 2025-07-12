@@ -9,6 +9,7 @@ fi
 # Path variables (add your custom variables here for better maintainability)
 CONSERVATION_PATH="/sys/bus/platf*/drivers/ideap*/VPC*/conser*"
 FN_LOCK_PATH="/sys/bus/platf*/drivers/ideap*/VPC*/fn*"
+KBD_Backlight="/sys/bus/platform/drivers/ideapad_acpi/VPC*/leds/platform::kbd_backlight/brightness"
 
 # Toggle Conservation Mode
 toggle_conservation() {
@@ -38,6 +39,7 @@ toggle_fn_lock() {
 show_status() {
     cons=$(cat $CONSERVATION_PATH 2>/dev/null)
     fn=$(cat $FN_LOCK_PATH 2>/dev/null)
+    kbd=$(cat $KBD_Backlight 2>/dev/null)
     # p and q is computed earlier to lessen the clutter inside the menu
     p=$( [ "$cons" -eq 1 ] && echo "[ ON]" || echo "[OFF]" )
     q=$( [ "$fn" -eq 1 ] && echo "[ ON]" || echo "[OFF]" )
@@ -47,6 +49,7 @@ show_status() {
     echo "|  Current Status:              |"
     echo "|  - Conservation Mode: $p   |"
     echo "|  - Function Lock:     $q   |"
+    echo "|  - Backlight level:   $kbd       |"
     echo "|===============================|"
     echo "|  Options:                     |"
     echo "|  1) Toggle Conservation Mode  |"
